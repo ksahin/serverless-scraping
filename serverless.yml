@@ -1,0 +1,16 @@
+service: craigslist-scraper-api # NOTE: update this with your service name
+provider:
+  name: aws
+  runtime: java8
+  timeout: 30
+
+package:
+  artifact: target/hello-dev.jar
+
+functions:
+  getCraigsListItems:
+    handler: com.serverless.Handler
+    events:
+    - http:
+        path: /items/{searchQuery}
+        method: get
