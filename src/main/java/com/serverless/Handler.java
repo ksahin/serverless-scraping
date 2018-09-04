@@ -20,27 +20,20 @@ public class Handler implements RequestHandler<Map<String, Object>, ApiGatewayRe
 	@Override
 	public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
 		LOG.info("received: {}", input);
-
 		try{
             Map<String,String> pathParameters =  (Map<String,String>)input.get("pathParameters");
             String query = pathParameters.get("searchQuery");
 
             LOG.info("Query = " + query);
 
-
             CraigsListScraper scraper = new CraigsListScraper();
             List<Item> items = scraper.scrape(query);
-
-            //Response responseBody = new Response("Success ! Your URL was " + query, input);
-
 
             return ApiGatewayResponse.builder()
                     .setStatusCode(200)
                     .setObjectBody(items)
                     .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
                     .build();
-
-
         }catch(Exception e){
 		    LOG.error("Error : " + e);
             Response responseBody = new Response("Error while processing URL: ", input);
@@ -50,6 +43,5 @@ public class Handler implements RequestHandler<Map<String, Object>, ApiGatewayRe
                     .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & Serverless"))
                     .build();
         }
-
 	}
 }
